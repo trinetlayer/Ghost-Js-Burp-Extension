@@ -21,7 +21,7 @@ as you browse.
   GitLab tokens, JWTs, Firebase, Slack, private keys, database URIs, and more.
 - **Endpoint discovery** — pulls API paths, cloud-storage URLs, and source-map references
   out of JS to expand your attack surface.
-- **⚡ Automatic & passive** — scans traffic already flowing through Burp. No buttons to press.
+- **Automatic & passive** — scans traffic already flowing through Burp. No buttons to press.
 - **Active fetch** — grabs `<script src>` bundles a page references but didn't load, and
   scans those too, replaying your live session cookies.
 - **Smart, low-noise** — a false-positive filter suppresses doc samples, placeholders, and
