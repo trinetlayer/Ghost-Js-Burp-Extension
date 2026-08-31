@@ -8,6 +8,9 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: write   # needed to publish the jar to a Release on version tags
+
 jobs:
   build:
     runs-on: ubuntu-latest

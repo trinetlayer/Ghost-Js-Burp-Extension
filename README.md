@@ -4,7 +4,7 @@
 
 ### Find hardcoded secrets & hidden endpoints in JavaScript — right inside Burp Suite.
 
-A Burp Suite extension by **[TrinetLayer](https://github.com/TrinetLayer)** that passively
+A Burp Suite extension by **[TrinetLayer](https://github.com/trinetlayer)** that passively
 scans every JavaScript, HTML, and JSON response for **150+ kinds of secrets** (API keys,
 tokens, cloud credentials, private keys) and maps hidden **API endpoints** — automatically,
 as you browse.
@@ -48,15 +48,15 @@ as you browse.
 - **JDK 17+** — only needed if you build from source ([Temurin](https://adoptium.net/) works)
 
 ### Option A — Download the ready-made jar (easiest)
-1. Grab `ghostjs.jar` from the [**Releases**](https://github.com/TrinetLayer/ghostjs/releases) page.
+1. Grab `ghostjs.jar` from the [**Releases**](https://github.com/trinetlayer/Ghost-Js/releases) page.
 2. In Burp: **Extensions ▸ Installed ▸ Add**
 3. **Extension type:** `Java` → **Select file:** `ghostjs.jar` → **Next**
 4. Done — a **GhostJS** tab appears. Start browsing your target. 🎉
 
 ### Option B — Build from source
 ```bash
-git clone https://github.com/TrinetLayer/ghostjs.git
-cd ghostjs
+git clone https://github.com/trinetlayer/Ghost-Js.git
+cd Ghost-Js
 ./build.sh          # downloads the Montoya API, compiles, packages dist/ghostjs.jar
 ```
 No Gradle or Maven required — `build.sh` handles everything. Then load `dist/ghostjs.jar`
@@ -137,6 +137,6 @@ Issues and PRs welcome.
 
 <div align="center">
 
-Made with 🩶 by **[TrinetLayer](https://github.com/TrinetLayer)** — tools for bug hunters.
+Made with 🩶 by **[TrinetLayer](https://github.com/trinetlayer)** — tools for bug hunters.
 
 </div>
