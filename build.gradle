@@ -1,0 +1,31 @@
+// Standard Gradle build (optional — build.sh needs no Gradle at all).
+//   gradle jar   ->   build/libs/ghostjs-burp.jar
+plugins {
+    id 'java'
+}
+
+group = 'ghostjs'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Provided by Burp at runtime — compile against it, never bundle it.
+    compileOnly 'net.portswigger.burp.extensions:montoya-api:2026.7'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+jar {
+    archiveBaseName = 'ghostjs-burp'
+}

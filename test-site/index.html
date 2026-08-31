@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GhostJS Test Target</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 0; background: #0f1420; color: #e6ecf5; }
+    header { background: #141b2e; padding: 24px 32px; border-bottom: 1px solid #263048; }
+    h1 { margin: 0; color: #66e0c0; font-size: 22px; }
+    .sub { color: #9aa6c0; font-size: 13px; margin-top: 4px; }
+    main { padding: 24px 32px; max-width: 820px; }
+    .card { background: #182034; border: 1px solid #263048; border-radius: 10px; padding: 16px 20px; margin-bottom: 16px; }
+    .card h2 { font-size: 14px; margin: 0 0 8px; color: #cdd6ea; }
+    code { background: #0d1220; padding: 2px 6px; border-radius: 4px; color: #ffcc88; font-size: 12px; }
+    ul { margin: 6px 0; padding-left: 20px; line-height: 1.7; font-size: 13px; }
+    .sev { display: inline-block; width: 68px; font-weight: 600; }
+    .critical { color: #ff8b8b; } .high { color: #ffb86b; } .medium { color: #ffe58a; }
+    .low { color: #b6e39a; } .info { color: #8fb8ff; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>GhostJS Test Target</h1>
+    <div class="sub">Browse this page through Burp with GhostJS loaded — the GhostJS tab should populate.</div>
+  </header>
+  <main>
+    <div class="card">
+      <h2>Loaded scripts (passively scanned + active-fetched)</h2>
+      <ul>
+        <li><code>js/app.js</code> — AWS key, AWS secret, Stripe live key, GitHub PAT</li>
+        <li><code>js/config.js</code> — Firebase config, Google API key, OAuth secret, Slack token, endpoints</li>
+        <li><code>js/vendor.min.js</code> — minified: Stripe test key, GitHub PAT, source map, cloud URL</li>
+        <li><code>js/placeholders.js</code> — samples that should be <em>suppressed</em></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Expected findings (fake, format-valid secrets)</h2>
+      <ul>
+        <li><span class="sev critical">CRITICAL</span> AWS Access Key, Stripe Live Key, GitHub PAT, Google OAuth Secret</li>
+        <li><span class="sev high">HIGH</span> Slack Token, Hardcoded Bearer Token</li>
+        <li><span class="sev medium">MEDIUM</span> Firebase Configuration Block</li>
+        <li><span class="sev low">LOW</span> Google API Key, Cloud Storage URL, Source Map</li>
+        <li><span class="sev info">INFO</span> API endpoints</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Inline secret (HTML body scan)</h2>
+      <p style="font-size:13px;color:#9aa6c0">This page also carries an inline token to prove HTML-body scanning works.</p>
+      <!-- inline demo secret: -->
+      <script>window.__SENTRY_DSN__ = "https://a1b2c3d4e5f67890a1b2c3d4e5f67890@o123456.ingest.sentry.io/1234567";</script>
+    </div>
+  </main>
+
+  <script src="js/app.js"></script>
+  <script src="js/config.js" type="module"></script>
+  <script src="js/vendor.min.js"></script>
+  <script src="js/placeholders.js" type="module"></script>
+</body>
+</html>

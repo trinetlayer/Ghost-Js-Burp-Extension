@@ -1,0 +1,16 @@
+# Build output
+dist/
+build/
+*.class
+
+# Downloaded dependencies (build.sh fetches these)
+lib/
+
+# Node
+node_modules/
+
+# OS / editor
+.DS_Store
+*.swp
+.idea/
+.vscode/
