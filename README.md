@@ -122,9 +122,9 @@ detection engine into your proxy; the web app adds:
 
 - **GhostJS deep scan** — crawl a domain and its subdomains, fetch every JS bundle, and scan
   the whole attack surface, not just what you happened to browse.
-- **Validator — validate any key in seconds** — paste any API key or secret and instantly see
-  whether it's live: **Verified / Unverified / Unknown**, with format checks for 40+ key types
-  and Shannon-entropy scoring.
+- **[Validator](https://validator.trinetlayer.com/) — validate any key in seconds** — paste any
+  API key or secret and instantly see whether it's live: **Verified / Unverified / Unknown**,
+  with format checks for 40+ key types and Shannon-entropy scoring.
 - Continuous monitoring, PDF/JSON reports, and full API access.
 
 **One engine, two surfaces** → [**app.trinetlayer.com**](https://app.trinetlayer.com)
@@ -156,6 +156,6 @@ Issues and PRs welcome.
 <div align="center">
 
 🕸️ Built by **[TrinetLayer](https://github.com/trinetlayer)** — tools for bug hunters.
-[app.trinetlayer.com](https://app.trinetlayer.com)
+[app.trinetlayer.com](https://app.trinetlayer.com) · [validator.trinetlayer.com](https://validator.trinetlayer.com/)
 
 </div>
