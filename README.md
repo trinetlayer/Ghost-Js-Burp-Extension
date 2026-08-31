@@ -15,24 +15,24 @@ as you browse.
 
 ---
 
-## ✨ What it does
+## 🕸️ What it does
 
-- 🔑 **150+ secret patterns** — AWS / GCP / Azure keys, Stripe / PayPal / Razorpay, GitHub &
+- **150+ secret patterns** — AWS / GCP / Azure keys, Stripe / PayPal / Razorpay, GitHub &
   GitLab tokens, JWTs, Firebase, Slack, private keys, database URIs, and more.
-- 🌐 **Endpoint discovery** — pulls API paths, cloud-storage URLs, and source-map references
+- **Endpoint discovery** — pulls API paths, cloud-storage URLs, and source-map references
   out of JS to expand your attack surface.
-- ⚡ **Automatic & passive** — scans traffic already flowing through Burp. No buttons to press.
-- 🔎 **Active fetch** — grabs `<script src>` bundles a page references but didn't load, and
-  scans those too (with your live session cookies).
-- 🎯 **Smart, low-noise** — a false-positive filter suppresses doc samples, placeholders, and
+- **Automatic & passive** — scans traffic already flowing through Burp. No buttons to press.
+- **Active fetch** — grabs `<script src>` bundles a page references but didn't load, and
+  scans those too, replaying your live session cookies.
+- **Smart, low-noise** — a false-positive filter suppresses doc samples, placeholders, and
   public-by-design keys, so you see real findings.
-- 🖍️ **Highlights in Proxy history** + a dedicated **GhostJS tab** with impact, remediation,
+- **Highlights in Proxy history** plus a dedicated **GhostJS tab** with impact, remediation,
   and one-click Markdown export.
-- 🚀 **Non-blocking** — large bundles are scanned in the background; your browsing never lags.
+- **Non-blocking** — large bundles are scanned in the background; your browsing never lags.
 
 ---
 
-## 📸 Screenshot
+## ★ Screenshot
 
 > Load the extension, browse a target, and the **GhostJS** tab fills with findings while the
 > matching Proxy-history rows light up by severity.
@@ -51,7 +51,7 @@ as you browse.
 1. Grab `ghostjs.jar` from the [**Releases**](https://github.com/trinetlayer/Ghost-Js/releases) page.
 2. In Burp: **Extensions ▸ Installed ▸ Add**
 3. **Extension type:** `Java` → **Select file:** `ghostjs.jar` → **Next**
-4. Done — a **GhostJS** tab appears. Start browsing your target. 🎉
+4. Done — a **GhostJS** tab appears. Start browsing your target.
 
 ### Option B — Build from source
 ```bash
@@ -64,7 +64,7 @@ in Burp as in Option A.
 
 ---
 
-## 🧪 Try it in 2 minutes
+## ⚡ Try it in 2 minutes
 
 The repo ships a test target seeded with **fake, format-valid** secrets so you can see
 GhostJS work (and take that screenshot):
@@ -80,7 +80,7 @@ GhostJS work (and take that screenshot):
 
 ---
 
-## 🎛️ Controls (GhostJS tab toolbar)
+## ⌘ Controls (GhostJS tab toolbar)
 
 | Toggle | What it does |
 |---|---|
@@ -114,22 +114,40 @@ so one pathological file can never hang or crash Burp.
 
 ---
 
+## 🔗 Part of the TrinetLayer platform
+
+GhostJS also lives on the web at **[app.trinetlayer.com](https://app.trinetlayer.com)** —
+TrinetLayer's AI-powered JavaScript security platform. This Burp extension brings the same
+detection engine into your proxy; the web app adds:
+
+- **GhostJS deep scan** — crawl a domain and its subdomains, fetch every JS bundle, and scan
+  the whole attack surface, not just what you happened to browse.
+- **Validator — validate any key in seconds** — paste any API key or secret and instantly see
+  whether it's live: **Verified / Unverified / Unknown**, with format checks for 40+ key types
+  and Shannon-entropy scoring.
+- Continuous monitoring, PDF/JSON reports, and full API access.
+
+**One engine, two surfaces** → [**app.trinetlayer.com**](https://app.trinetlayer.com)
+
+---
+
 ## ⚠️ Scope & responsible use
 
 GhostJS is for **authorized security testing only** — your own apps, or targets you have
-explicit permission to test (pentest engagement, bug-bounty program in scope). The findings
-are hints: always verify a secret is live and in-scope before reporting it.
+explicit permission to test (a pentest engagement or an in-scope bug-bounty program). The
+findings are hints: always verify a secret is live and in scope before reporting it.
 
 > Secrets found inside code **comments are reported** by design — a leaked key in a comment is
 > still a leaked key.
 
 ---
 
-## 🛠️ Build & contribute
+## 📄 Build & contribute
 
 - `./build.sh` → `dist/ghostjs.jar` (JDK 17+; downloads Montoya API automatically)
 - `gradle jar` also works if you prefer an IDE build
 - Patterns come from `export-patterns.mjs`; run it to regenerate `GeneratedPatterns.java`
+- Deep-dive: [`docs/TECHNICAL.md`](docs/TECHNICAL.md)
 
 Issues and PRs welcome.
 
@@ -137,6 +155,7 @@ Issues and PRs welcome.
 
 <div align="center">
 
-Made with 🩶 by **[TrinetLayer](https://github.com/trinetlayer)** — tools for bug hunters.
+🕸️ Built by **[TrinetLayer](https://github.com/trinetlayer)** — tools for bug hunters.
+[app.trinetlayer.com](https://app.trinetlayer.com)
 
 </div>
