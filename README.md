@@ -15,13 +15,13 @@ as you browse.
 
 ---
 
-## 🕸️ What it does
+## What it does
 
 - **150+ secret patterns** — AWS / GCP / Azure keys, Stripe / PayPal / Razorpay, GitHub &
   GitLab tokens, JWTs, Firebase, Slack, private keys, database URIs, and more.
 - **Endpoint discovery** — pulls API paths, cloud-storage URLs, and source-map references
   out of JS to expand your attack surface.
-- **Automatic & passive** — scans traffic already flowing through Burp. No buttons to press.
+- **⚡ Automatic & passive** — scans traffic already flowing through Burp. No buttons to press.
 - **Active fetch** — grabs `<script src>` bundles a page references but didn't load, and
   scans those too, replaying your live session cookies.
 - **Smart, low-noise** — a false-positive filter suppresses doc samples, placeholders, and
@@ -32,16 +32,16 @@ as you browse.
 
 ---
 
-## ★ Screenshot
+## Screenshot
 
 > Load the extension, browse a target, and the **GhostJS** tab fills with findings while the
 > matching Proxy-history rows light up by severity.
 
-*(Add a screenshot here — see [Try it in 2 minutes](#-try-it-in-2-minutes) to generate one.)*
+*(Add a screenshot here — see [Try it in 2 minutes](#try-it-in-2-minutes) to generate one.)*
 
 ---
 
-## 🚀 Quick start
+## Quick start
 
 ### Requirements
 - **Burp Suite** (Community or Professional)
@@ -64,7 +64,7 @@ in Burp as in Option A.
 
 ---
 
-## ⚡ Try it in 2 minutes
+## Try it in 2 minutes
 
 The repo ships a test target seeded with **fake, format-valid** secrets so you can see
 GhostJS work (and take that screenshot):
@@ -80,7 +80,7 @@ GhostJS work (and take that screenshot):
 
 ---
 
-## ⌘ Controls (GhostJS tab toolbar)
+## Controls (GhostJS tab toolbar)
 
 | Toggle | What it does |
 |---|---|
@@ -97,7 +97,7 @@ Click any finding to see its **value, impact, and remediation**.
 
 ---
 
-## 🧠 How it works
+## How it works
 
 ```
 HTTP response ─► GhostJS (passive)
@@ -114,7 +114,7 @@ so one pathological file can never hang or crash Burp.
 
 ---
 
-## 🔗 Part of the TrinetLayer platform
+## Part of the TrinetLayer platform
 
 GhostJS also lives on the web at **[app.trinetlayer.com](https://app.trinetlayer.com)** —
 TrinetLayer's AI-powered JavaScript security platform. This Burp extension brings the same
@@ -131,7 +131,7 @@ detection engine into your proxy; the web app adds:
 
 ---
 
-## ⚠️ Scope & responsible use
+## Scope & responsible use
 
 GhostJS is for **authorized security testing only** — your own apps, or targets you have
 explicit permission to test (a pentest engagement or an in-scope bug-bounty program). The
@@ -142,7 +142,7 @@ findings are hints: always verify a secret is live and in scope before reporting
 
 ---
 
-## 📄 Build & contribute
+## Build & contribute
 
 - `./build.sh` → `dist/ghostjs.jar` (JDK 17+; downloads Montoya API automatically)
 - `gradle jar` also works if you prefer an IDE build
@@ -155,7 +155,7 @@ Issues and PRs welcome.
 
 <div align="center">
 
-🕸️ Built by **[TrinetLayer](https://github.com/trinetlayer)** — tools for bug hunters.
+Built by **[TrinetLayer](https://github.com/trinetlayer)** — tools for bug hunters.
 [app.trinetlayer.com](https://app.trinetlayer.com) · [validator.trinetlayer.com](https://validator.trinetlayer.com/)
 
 </div>
