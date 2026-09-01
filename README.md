@@ -48,15 +48,15 @@ as you browse.
 - **JDK 17+** — only needed if you build from source ([Temurin](https://adoptium.net/) works)
 
 ### Option A — Download the ready-made jar (easiest)
-1. Grab `ghostjs.jar` from the [**Releases**](https://github.com/trinetlayer/Ghost-Js/releases) page.
+1. Grab `ghostjs.jar` from the [**Releases**](https://github.com/trinetlayer/Ghost-Js-Burp-Extension-/releases) page.
 2. In Burp: **Extensions ▸ Installed ▸ Add**
 3. **Extension type:** `Java` → **Select file:** `ghostjs.jar` → **Next**
 4. Done — a **GhostJS** tab appears. Start browsing your target.
 
 ### Option B — Build from source
 ```bash
-git clone https://github.com/trinetlayer/Ghost-Js.git
-cd Ghost-Js
+git clone https://github.com/trinetlayer/Ghost-Js-Burp-Extension-.git
+cd Ghost-Js-Burp-Extension-
 ./build.sh          # downloads the Montoya API, compiles, packages dist/ghostjs.jar
 ```
 No Gradle or Maven required — `build.sh` handles everything. Then load `dist/ghostjs.jar`
