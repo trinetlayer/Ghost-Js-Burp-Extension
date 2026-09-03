@@ -37,22 +37,22 @@ as you browse.
 > Load the extension, browse a target, and the **GhostJS** tab fills with findings while the
 > matching Proxy-history rows light up by severity.
 
-![GhostJS tab after scanning the bundled test target: 18 findings sorted by severity, with the Stripe live key selected and its impact + remediation shown below](docs/screenshot-ghostjs-tab.png)
+![GhostJS findings view: 18 findings from a demo target sorted by severity, with the Stripe live key selected and its value, context, impact and remediation shown on the right](docs/ghostjs-findings.png)
 
-What you are looking at (the bundled [test target](#try-it-in-2-minutes), all secrets fake):
+Real GhostJS output from the bundled [test target](#try-it-in-2-minutes) (all secrets fake,
+hostnames swapped for `example.com`):
 
-- **Findings table** — one row per unique secret, sorted CRITICAL → INFO. Columns: severity,
-  type, category, confidence (0–100), masked value, source URL, and line number. Eight criticals
-  here: AWS access + secret keys, Stripe live key, two GitHub PATs, Slack token, Google OAuth secret.
-- **Masked values** — the table never prints a full secret (`sk_l…MNOP (34 chars)`); the full
-  value only appears in the detail pane when you click a row.
-- **Detail pane** — the selected Stripe live key with its exact line, surrounding code context,
-  a plain-English impact statement, and numbered remediation steps.
+- **Severity at a glance** — 8 CRITICAL · 1 HIGH · 1 MEDIUM · 4 LOW · 4 INFO. Criticals here:
+  AWS access + secret keys, Stripe live key, two GitHub PATs, Slack token, Google OAuth secret.
+- **Findings table** — one row per unique secret with type, category, confidence (0–100),
+  masked value, source URL, and line number. The table never prints a full secret
+  (`sk_l…MNOP`); the full value only appears in the detail pane when you click a row.
+- **Detail pane** — the selected Stripe live key with its exact line, the surrounding code with
+  the match highlighted, a plain-English impact statement, and numbered remediation steps.
 - **Discovery rows** (LOW/INFO) — source-map reference, S3 URL, and API paths pulled from the
   JS. These are references, not probed endpoints; see [Scope](#scope--responsible-use).
-- **Status bar** — findings count and the 150 patterns loaded from the TrinetLayer engine.
-- **Not shown** — `js/placeholders.js` (AWS doc samples, a Stripe *publishable* key, i18n
-  strings) produced zero rows: the false-positive filter dropped every one of them.
+- **Zero noise** — `js/placeholders.js` (AWS doc samples, a Stripe *publishable* key, i18n
+  strings) produced no rows: the false-positive filter dropped every one of them.
 
 ---
 
