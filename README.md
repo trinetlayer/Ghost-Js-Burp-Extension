@@ -37,20 +37,19 @@ as you browse.
 > Load the extension, browse a target, and the **GhostJS** tab fills with findings while the
 > matching Proxy-history rows light up by severity.
 
-![GhostJS output in a terminal: the extension banner and Burp output log, 18 findings from a demo target sorted by severity, and the Stripe live key detail with value, context and remediation](docs/ghostjs-findings.png)
+![Terminal showing GhostJS in action: build, serve the test target, Burp output log lines per scanned resource, and the top findings with severity, masked value and file:line](docs/ghostjs-findings.png)
 
 Real GhostJS output from the bundled [test target](#try-it-in-2-minutes) (all secrets fake,
 hostnames swapped for `example.com`):
 
 - **Severity at a glance** — 8 CRITICAL · 1 HIGH · 1 MEDIUM · 4 LOW · 4 INFO. Criticals here:
   AWS access + secret keys, Stripe live key, two GitHub PATs, Slack token, Google OAuth secret.
-- **Findings table** — one row per unique secret with type, category, confidence (0–100),
-  masked value, source URL, and line number. The table never prints a full secret
-  (`sk_l…MNOP`); the full value only appears in the detail pane when you click a row.
-- **Burp output log** — the top block is what GhostJS prints to Burp's Extensions output
-  pane: patterns loaded, then one line per scanned resource with the worst severity found.
-- **Finding detail** — the Stripe live key with its exact line, the surrounding code with the
-  match highlighted, and numbered remediation steps (same text as the Markdown export).
+- **Burp output log** — what GhostJS prints to Burp's Extensions output pane: patterns
+  loaded, then one line per scanned resource with the worst severity found, including
+  bundles pulled in by active fetch.
+- **Findings** — one row per unique secret with severity, type, masked value, and
+  `file:line`. GhostJS never prints a full secret in the table (`sk_l…MNOP`); the full value
+  is only shown in the detail pane when you click a row in the GhostJS tab.
 - **Discovery rows** (LOW/INFO) — source-map reference, S3 URL, and API paths pulled from the
   JS. These are references, not probed endpoints; see [Scope](#scope--responsible-use).
 - **Zero noise** — `js/placeholders.js` (AWS doc samples, a Stripe *publishable* key, i18n
