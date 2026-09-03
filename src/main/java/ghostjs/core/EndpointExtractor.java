@@ -12,6 +12,10 @@ import java.util.regex.Pattern;
  * and source-map references. A lightweight companion to {@link SecretScanner};
  * emits {@link Finding}s under the "Discovery" category at low/info severity so
  * they never drown out real secrets.
+ * <p>
+ * All three are <em>references only</em>: the string was found in the JS body.
+ * Nothing here is fetched or probed, so a 404 on the referenced resource does
+ * not make the finding a false positive.
  */
 public final class EndpointExtractor {
 
@@ -42,27 +46,36 @@ public final class EndpointExtractor {
         for (String u : cloud) {
             out.add(new Finding("Cloud Storage URL", "Discovery", "low", 60,
                     u, url, 0, u,
-                    "Reference to a cloud object-storage endpoint. Worth checking for public "
-                            + "listing, unauthenticated read, or writable ACLs.",
-                    "Verify the bucket/container is not publicly listable or writable."));
+                    "Reference to a cloud object-storage URL found in client JS. GhostJS does "
+                            + "not request it; the object may not exist or may be private. Check "
+                            + "manually for public listing, unauthenticated read, or writable ACLs.",
+                    "Confirm the bucket/container is not publicly listable or writable. A 404 on "
+                            + "the referenced object does not rule out a listable bucket."));
         }
 
         Set<String> maps = collect(SOURCE_MAP, body, 1);
         for (String u : maps) {
             out.add(new Finding("Source Map Reference", "Discovery", "low", 70,
                     u, url, 0, "sourceMappingURL=" + u,
-                    "A source map can reconstruct original (pre-minification) source, "
-                            + "including comments, internal paths, and sometimes secrets.",
-                    "Do not ship .map files to production, or restrict access to them."));
+                    "The bundle declares a sourceMappingURL. GhostJS reports the reference only "
+                            + "and does not fetch the .map. If it is served (HTTP 200), it "
+                            + "reconstructs pre-minification source, comments, internal paths, "
+                            + "and sometimes secrets.",
+                    "Request the .map URL (resolved against the bundle URL). If it returns 200 in "
+                            + "production, remove it or restrict access; if 404, no action beyond "
+                            + "keeping it that way."));
         }
 
         Set<String> paths = collect(API_PATH, body, 1);
         for (String p : paths) {
             out.add(new Finding("API Endpoint", "Discovery", "info", 40,
                     p, url, 0, p,
-                    "Internal/API path referenced from client JS. Useful for expanding the "
-                            + "tested attack surface (IDOR, authz, hidden functionality).",
-                    "N/A — informational. Test the endpoint for access-control issues."));
+                    "Internal/API path string referenced from client JS (unverified — GhostJS "
+                            + "does not probe it). Useful for expanding the tested attack surface "
+                            + "(IDOR, authz, hidden functionality). A 404 from a plain GET does not "
+                            + "mean the route is absent: it may need POST, auth, or a different host.",
+                    "N/A — informational. Test the endpoint with the method/headers the JS "
+                            + "actually uses."));
         }
 
         return out;

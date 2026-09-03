@@ -135,7 +135,9 @@ detection engine into your proxy; the web app adds:
 
 GhostJS is for **authorized security testing only** — your own apps, or targets you have
 explicit permission to test (a pentest engagement or an in-scope bug-bounty program). The
-findings are hints: always verify a secret is live and in scope before reporting it.
+findings are hints: always verify a secret is live and in scope before reporting it. Discovery
+findings (API endpoints, cloud-storage URLs, source-map references) are references extracted from
+JS, not probed — a 404 on a plain GET does not make them false positives.
 
 > Secrets found inside code **comments are reported** by design — a leaked key in a comment is
 > still a leaked key.
