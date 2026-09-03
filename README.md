@@ -37,19 +37,20 @@ as you browse.
 > Load the extension, browse a target, and the **GhostJS** tab fills with findings while the
 > matching Proxy-history rows light up by severity.
 
-![Terminal showing GhostJS in action: build, serve the test target, Burp output log lines per scanned resource, and the top findings with severity, masked value and file:line](docs/ghostjs-findings.png)
+![GhostJS inside Burp Suite: the GhostJS tab with the findings table and detail pane, and behind it Proxy HTTP history with the JS responses highlighted red by severity](docs/ghostjs-findings.png)
 
 Real GhostJS output from the bundled [test target](#try-it-in-2-minutes) (all secrets fake,
 hostnames swapped for `example.com`):
 
-- **Severity at a glance** — 8 CRITICAL · 1 HIGH · 1 MEDIUM · 4 LOW · 4 INFO. Criticals here:
-  AWS access + secret keys, Stripe live key, two GitHub PATs, Slack token, Google OAuth secret.
-- **Burp output log** — what GhostJS prints to Burp's Extensions output pane: patterns
-  loaded, then one line per scanned resource with the worst severity found, including
-  bundles pulled in by active fetch.
-- **Findings** — one row per unique secret with severity, type, masked value, and
-  `file:line`. GhostJS never prints a full secret in the table (`sk_l…MNOP`); the full value
-  is only shown in the detail pane when you click a row in the GhostJS tab.
+- **GhostJS tab** — toolbar toggles, then one row per unique secret with severity, type,
+  category, confidence (0–100), masked value, URL and line. 8 CRITICAL rows here: AWS access +
+  secret keys, Stripe live key, two GitHub PATs, Slack token, Google OAuth secret.
+- **Detail pane** — click a row to see the full value, the surrounding code, a plain-English
+  impact statement and numbered remediation steps. The table itself never prints a full
+  secret (`sk_l…MNOP`).
+- **Proxy history** (window behind) — the same responses in Burp's HTTP history, coloured by
+  worst severity (red = critical/high, orange = medium, yellow = low, gray = info) with a
+  `GhostJS: N finding(s)` note, so you spot leaky bundles without leaving Proxy.
 - **Discovery rows** (LOW/INFO) — source-map reference, S3 URL, and API paths pulled from the
   JS. These are references, not probed endpoints; see [Scope](#scope--responsible-use).
 - **Zero noise** — `js/placeholders.js` (AWS doc samples, a Stripe *publishable* key, i18n
