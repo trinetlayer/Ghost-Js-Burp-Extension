@@ -37,7 +37,7 @@ as you browse.
 > Load the extension, browse a target, and the **GhostJS** tab fills with findings while the
 > matching Proxy-history rows light up by severity.
 
-![GhostJS findings view: 18 findings from a demo target sorted by severity, with the Stripe live key selected and its value, context, impact and remediation shown on the right](docs/ghostjs-findings.png)
+![GhostJS output in a terminal: the extension banner and Burp output log, 18 findings from a demo target sorted by severity, and the Stripe live key detail with value, context and remediation](docs/ghostjs-findings.png)
 
 Real GhostJS output from the bundled [test target](#try-it-in-2-minutes) (all secrets fake,
 hostnames swapped for `example.com`):
@@ -47,8 +47,10 @@ hostnames swapped for `example.com`):
 - **Findings table** — one row per unique secret with type, category, confidence (0–100),
   masked value, source URL, and line number. The table never prints a full secret
   (`sk_l…MNOP`); the full value only appears in the detail pane when you click a row.
-- **Detail pane** — the selected Stripe live key with its exact line, the surrounding code with
-  the match highlighted, a plain-English impact statement, and numbered remediation steps.
+- **Burp output log** — the top block is what GhostJS prints to Burp's Extensions output
+  pane: patterns loaded, then one line per scanned resource with the worst severity found.
+- **Finding detail** — the Stripe live key with its exact line, the surrounding code with the
+  match highlighted, and numbered remediation steps (same text as the Markdown export).
 - **Discovery rows** (LOW/INFO) — source-map reference, S3 URL, and API paths pulled from the
   JS. These are references, not probed endpoints; see [Scope](#scope--responsible-use).
 - **Zero noise** — `js/placeholders.js` (AWS doc samples, a Stripe *publishable* key, i18n
