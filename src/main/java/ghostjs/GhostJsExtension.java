@@ -9,6 +9,7 @@ import ghostjs.http.ActiveJsFetcher;
 import ghostjs.http.GhostConfig;
 import ghostjs.http.JsScanHandler;
 import ghostjs.ui.GhostJsTab;
+import ghostjs.ui.GhostTheme;
 
 import javax.swing.SwingUtilities;
 import java.lang.reflect.InvocationTargetException;
@@ -69,14 +70,21 @@ public final class GhostJsExtension implements BurpExtension {
     }
 
     private static GhostJsTab buildTab(FindingStore store, GhostConfig config, int patternCount) {
+        // Install the theme and build the tab on the EDT together — FlatLaf's
+        // install touches live Swing component trees, and the tab itself must
+        // be constructed on the EDT.
         // If initialize() is ever invoked on the EDT, invokeAndWait would throw — build
         // the tab directly in that case.
         if (SwingUtilities.isEventDispatchThread()) {
+            GhostTheme.install();
             return new GhostJsTab(store, config, patternCount);
         }
         final GhostJsTab[] holder = new GhostJsTab[1];
         try {
-            SwingUtilities.invokeAndWait(() -> holder[0] = new GhostJsTab(store, config, patternCount));
+            SwingUtilities.invokeAndWait(() -> {
+                GhostTheme.install();
+                holder[0] = new GhostJsTab(store, config, patternCount);
+            });
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         } catch (InvocationTargetException e) {

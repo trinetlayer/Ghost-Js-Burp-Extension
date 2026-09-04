@@ -8,7 +8,9 @@ set -euo pipefail
 
 cd "$(dirname "$0")"
 MONTOYA="${MONTOYA:-2026.7}"
+FLATLAF="${FLATLAF:-3.7.1}"
 JAR="lib/montoya-api-${MONTOYA}.jar"
+FLATLAF_JAR="lib/flatlaf-${FLATLAF}.jar"
 OUT="dist/ghostjs.jar"
 
 if [[ ! -f "$JAR" ]]; then
@@ -16,6 +18,13 @@ if [[ ! -f "$JAR" ]]; then
   mkdir -p lib
   curl -fsSL -o "$JAR" \
     "https://repo1.maven.org/maven2/net/portswigger/burp/extensions/montoya-api/${MONTOYA}/montoya-api-${MONTOYA}.jar"
+fi
+
+if [[ ! -f "$FLATLAF_JAR" ]]; then
+  echo "Downloading FlatLaf ${FLATLAF}..."
+  mkdir -p lib
+  curl -fsSL -o "$FLATLAF_JAR" \
+    "https://repo1.maven.org/maven2/com/formdev/flatlaf/${FLATLAF}/flatlaf-${FLATLAF}.jar"
 fi
 
 echo "Regenerating patterns from the TypeScript engine (if available)..."
@@ -30,7 +39,11 @@ mkdir -p build/classes dist
 
 echo "Compiling..."
 find src/main/java -name '*.java' > build/sources.txt
-javac -encoding UTF-8 -cp "$JAR" -d build/classes @build/sources.txt
+javac -encoding UTF-8 -cp "$JAR:$FLATLAF_JAR" -d build/classes @build/sources.txt
+
+echo "Bundling FlatLaf classes..."
+unzip -oq "$FLATLAF_JAR" -d build/classes
+rm -f build/classes/module-info.class
 
 echo "Packaging $OUT..."
 cp -R src/main/resources/. build/classes/ 2>/dev/null || true

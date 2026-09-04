@@ -1,5 +1,6 @@
 package ghostjs.ui;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import ghostjs.core.Finding;
 import ghostjs.core.FindingStore;
 import ghostjs.core.Severity;
@@ -21,9 +22,11 @@ import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.geom.RoundRectangle2D;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
@@ -63,6 +66,8 @@ public final class GhostJsTab implements FindingStore.Listener {
         root.add(north, BorderLayout.NORTH);
 
         table.setAutoCreateRowSorter(true);
+        table.setRowHeight(26);
+        table.setShowGrid(false);
         table.getColumnModel().getColumn(0).setCellRenderer(new SeverityRenderer());
         table.getColumnModel().getColumn(0).setMaxWidth(90);
         table.getColumnModel().getColumn(3).setMaxWidth(50);
@@ -74,33 +79,37 @@ public final class GhostJsTab implements FindingStore.Listener {
         detail.setEditable(false);
         detail.setLineWrap(true);
         detail.setWrapStyleWord(true);
-        detail.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+        detail.setFont(GhostTheme.FONT_MONO);
         detail.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
 
         JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
                 new JScrollPane(table), new JScrollPane(detail));
         split.setResizeWeight(0.6);
+        split.setBorder(BorderFactory.createEmptyBorder());
+        split.setDividerSize(6);
         root.add(split, BorderLayout.CENTER);
 
         status.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 8));
+        status.setForeground(GhostTheme.textMuted);
+        status.setFont(GhostTheme.FONT_SUBTLE);
         root.add(status, BorderLayout.SOUTH);
     }
 
     private JComponent buildHeader() {
         JPanel header = new JPanel(new BorderLayout());
-        header.setBackground(new Color(0x14, 0x1B, 0x2E));
+        header.setBackground(GhostTheme.headerBg);
         header.setBorder(BorderFactory.createEmptyBorder(8, 12, 8, 12));
 
         JLabel title = new JLabel(ghostjs.Branding.PRODUCT
                 + "  —  " + ghostjs.Branding.TAGLINE);
-        title.setForeground(new Color(0x66, 0xE0, 0xC0));
-        title.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 15));
+        title.setForeground(GhostTheme.accent);
+        title.setFont(GhostTheme.FONT_TITLE);
         header.add(title, BorderLayout.WEST);
 
         JLabel vendor = new JLabel("by " + ghostjs.Branding.VENDOR
                 + "  ·  v" + ghostjs.Branding.VERSION);
-        vendor.setForeground(new Color(0x9A, 0xA6, 0xC0));
-        vendor.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
+        vendor.setForeground(GhostTheme.textMuted);
+        vendor.setFont(GhostTheme.FONT_SUBTLE);
         header.add(vendor, BorderLayout.EAST);
         return header;
     }
@@ -118,14 +127,22 @@ public final class GhostJsTab implements FindingStore.Listener {
         bar.addSeparator();
 
         JButton clear = new JButton("Clear");
+        clear.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_ROUND_RECT);
         clear.addActionListener(e -> store.clear());
         bar.add(clear);
 
         JButton export = new JButton("Export report");
+        export.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_ROUND_RECT);
+        export.putClientProperty(FlatClientProperties.STYLE,
+                "background:" + toHex(GhostTheme.accent) + "; foreground:#FFFFFF; focusedBackground:" + toHex(GhostTheme.accent));
         export.addActionListener(e -> exportReport());
         bar.add(export);
 
         return bar;
+    }
+
+    private static String toHex(java.awt.Color c) {
+        return String.format("#%02X%02X%02X", c.getRed(), c.getGreen(), c.getBlue());
     }
 
     private JCheckBox toggle(String label, boolean initial, java.util.function.Consumer<Boolean> onChange) {
@@ -206,24 +223,51 @@ public final class GhostJsTab implements FindingStore.Listener {
                 + patternCount + " patterns loaded");
     }
 
-    /** Colours the severity cell by risk. */
+    /** Renders the severity cell as a rounded, colour-coded pill badge. */
     private static final class SeverityRenderer extends DefaultTableCellRenderer {
+        private String severity = "";
+
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value,
                 boolean isSelected, boolean hasFocus, int row, int column) {
             Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-            String sev = value == null ? "" : value.toString().toLowerCase();
-            if (!isSelected) {
-                c.setBackground(switch (sev) {
-                    case "critical" -> new Color(0xFF, 0xCD, 0xD2);
-                    case "high" -> new Color(0xFF, 0xE0, 0xB2);
-                    case "medium" -> new Color(0xFF, 0xF9, 0xC4);
-                    case "low" -> new Color(0xDC, 0xED, 0xC8);
-                    default -> table.getBackground();
-                });
-            }
-            setValue(Severity.rank(sev) < 5 ? sev.toUpperCase() : sev);
+            severity = value == null ? "" : value.toString().toLowerCase();
+            setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
+            setForeground(isSelected ? table.getSelectionForeground() : table.getForeground());
+            setHorizontalAlignment(CENTER);
+            setValue(Severity.rank(severity) < 5 ? severity.toUpperCase() : severity);
+            setOpaque(true);
             return c;
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            String text = getText();
+            if (text == null || text.isBlank()) {
+                super.paintComponent(g);
+                return;
+            }
+
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setColor(getBackground());
+            g2.fillRect(0, 0, getWidth(), getHeight());
+
+            g2.setFont(getFont());
+            int textWidth = g2.getFontMetrics().stringWidth(text);
+            int pillWidth = Math.min(getWidth() - 6, textWidth + 18);
+            int pillHeight = Math.min(getHeight() - 6, 18);
+            int x = (getWidth() - pillWidth) / 2;
+            int y = (getHeight() - pillHeight) / 2;
+
+            g2.setColor(GhostTheme.severityFill(severity));
+            g2.fill(new RoundRectangle2D.Float(x, y, pillWidth, pillHeight, pillHeight, pillHeight));
+
+            g2.setColor(GhostTheme.severityForeground(severity));
+            int textX = x + (pillWidth - textWidth) / 2;
+            int textY = y + (pillHeight - g2.getFontMetrics().getHeight()) / 2 + g2.getFontMetrics().getAscent();
+            g2.drawString(text, textX, textY);
+            g2.dispose();
         }
     }
 }

@@ -14,6 +14,8 @@ repositories {
 dependencies {
     // Provided by Burp at runtime — compile against it, never bundle it.
     compileOnly 'net.portswigger.burp.extensions:montoya-api:2026.7'
+    // Burp does NOT provide this — must be bundled into the extension jar.
+    implementation 'com.formdev:flatlaf:3.7.1'
 }
 
 java {
@@ -28,4 +30,8 @@ tasks.withType(JavaCompile).configureEach {
 
 jar {
     archiveBaseName = 'ghostjs-burp'
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
