@@ -34,21 +34,21 @@ as you browse.
 
 ## Screenshot
 
-> Load the extension, browse a target, and the **GhostJS** tab fills with findings while the
-> matching Proxy-history rows light up by severity.
+> Load the extension, browse a target, and the **GhostJS** tab fills with findings — rendered
+> in a clean, modern flat UI with colour-coded severity badges.
 
-![GhostJS inside Burp Suite: the GhostJS tab with the findings table and detail pane, and behind it Proxy HTTP history with the JS responses highlighted red by severity](docs/ghostjs-findings.png)
+![GhostJS inside Burp Suite: the GhostJS tab with rounded severity pill badges, an accent-coloured Export report button, and a findings table and detail pane below](docs/ghostjs-findings.png)
 
 Real GhostJS output from the bundled [test target](#try-it-in-2-minutes) (all secrets fake,
 hostnames swapped for `example.com`):
 
-- **GhostJS tab** — toolbar toggles, then one row per unique secret with severity, type,
-  category, confidence (0–100), masked value, URL and line. 8 CRITICAL rows here: AWS access +
-  secret keys, Stripe live key, two GitHub PATs, Slack token, Google OAuth secret.
+- **GhostJS tab** — toolbar toggles, then one row per unique secret with a rounded severity
+  badge, type, category, confidence (0–100), masked value, URL and line. 8 CRITICAL rows here:
+  AWS access + secret keys, Stripe live key, two GitHub PATs, Slack token, Google OAuth secret.
 - **Detail pane** — click a row to see the full value, the surrounding code, a plain-English
   impact statement and numbered remediation steps. The table itself never prints a full
   secret (`sk_l…MNOP`).
-- **Proxy history** (window behind) — the same responses in Burp's HTTP history, coloured by
+- **Proxy history highlighting** — the same responses are coloured in Burp's HTTP history by
   worst severity (red = critical/high, orange = medium, yellow = low, gray = info) with a
   `GhostJS: N finding(s)` note, so you spot leaky bundles without leaving Proxy.
 - **Discovery rows** (LOW/INFO) — source-map reference, S3 URL, and API paths pulled from the
